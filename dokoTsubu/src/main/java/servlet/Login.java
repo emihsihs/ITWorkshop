@@ -14,29 +14,36 @@ import model.User;
 
 @WebServlet("/Login")
 public class Login extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//リクエストパラメータの取得
-		request.setCharacterEncoding("UTF-8");
-		String name = request.getParameter("name");
-		String pass = request.getParameter("pass");
-		//Userインスタンス(ユーザー情報)の生成
-		User user = new User(name, pass);
-		//ログイン処理
-		LoginLogic loginLogic = new LoginLogic();
-		boolean isLogin = loginLogic.execute(user);
-		
-		//ログイン成功時の処理
-		if(isLogin) {
-			//ユーザー情報をセッションスコープに保存
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", user);
-		}
-		//ログイン結果画面にフォワード
-		RequestDispatcher dispatcher =
-				request.getRequestDispatcher("WEB-INF/jsp/loginResult.jsp");
-		dispatcher.forward(request, response);
-	}
+    private static final long serialVersionUID = 1L;
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // リクエストパラメータの取得
+        request.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("name");
+        String pass = request.getParameter("pass");
+
+        // デバッグ用ログ
+        System.out.println("Attempting login with username: " + name + " and password: " + pass);
+
+        // Userインスタンス（ユーザー情報）の生成
+        User user = new User(name, pass);
+
+        // ログイン処理
+        LoginLogic loginLogic = new LoginLogic();
+        boolean isLogin = loginLogic.execute(user);
+
+        // ログイン成功時の処理
+        if (isLogin) {
+            // ユーザー情報をセッションスコープに保存
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser", user);
+        } else {
+            request.setAttribute("errorMessage", "ユーザー名またはパスワードが正しくありません。");
+        }
+
+        // ログイン結果画面にフォワード
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/loginResult.jsp");
+        dispatcher.forward(request, response);
+    }
 }
+

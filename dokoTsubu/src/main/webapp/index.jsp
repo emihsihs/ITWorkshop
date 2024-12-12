@@ -16,6 +16,7 @@
 <input type="password" name="pass" class="pass " type="password"  placeholder="Password"><br>
 <input type="submit" id="submit" value="ログイン" class="submit" >
 </form>
+<p align="center"><a href="Register">新規会員登録はこちら</a></p>
 </div>
 </body>
 </html>

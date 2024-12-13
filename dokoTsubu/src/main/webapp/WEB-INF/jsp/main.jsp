@@ -5,30 +5,58 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/login.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/main.css">
 <title>カンリー</title>
 </head>
 <body>
 <h1 class="b" align="center">カンリーメイン</h1>
-<p>
-<c:out value="${loginUser.name}" />さん、ログイン中
-<a href="Logout">ログアウト</a>
-</p>
-<p><a href="Main">更新</a></p>
-<form action="Main" method="post">
-    <input type="text" name="text">
-    <select name="tag">
-        <option value=""></option>
-        <option value="質問">質問</option>
-        <option value="回答">回答</option>
-        <option value="重要なお知らせ">重要なお知らせ</option>
-    </select>
+<div class="header">
+    <div class="login-info">
+        <c:out value="${loginUser.name}" />さん、ログイン中
+        <a href="Logout" class="logout-button">ログアウト</a>
+    </div>
+    <div class="update-container">
+        <a href="Main" class="update-button">更新</a>
+    </div>
+</div>
+<form action="Main" method="post" enctype="multipart/form-data">
+    <input type="text" name="text" placeholder="つぶやきを入力">
+    <input type="file" name="image" accept="image/*">
     <input type="submit" value="つぶやく">
 </form>
 <c:forEach var="mutter" items="${mutterList}">
+<div class="mutter-box">
 <p><c:out value="${mutter.userName}" />:
    <c:out value="${mutter.text}" />
-   (<c:out value="${mutter.tag}" />)</p>
+   <form action="LikeMutter" method="post" style="display:inline;">
+      <input type="hidden" name="mutterId" value="${mutter.id}">
+      <input type="submit" class="like-button" value="いいね">
+   </form>
+   <span class="like-count">${mutter.likeCount} いいね</span>
+   <c:if test="${not empty mutter.imageUrl}">
+       <img src="${mutter.imageUrl}" alt="Attached Image" class="attached-image">
+   </c:if>
+   <!-- 削除ボタンを追加 -->
+   <form action="DeleteMutter" method="post" style="display:inline;">
+      <input type="hidden" name="mutterId" value="${mutter.id}">
+      <input type="submit" class="delete-button" value="削除">
+   </form>
+</p>
+    <!-- コメント表示とコメント投稿フォームを追加 -->
+    <div class="comment-box">
+        <c:forEach var="comment" items="${mutter.comments}">
+            <p>-- <c:out value="${comment.userName}" />: <c:out value="${comment.text}" /></p>
+        </c:forEach>
+        <form action="PostComment" method="post">
+            <input type="hidden" name="mutterId" value="${mutter.id}">
+            <input type="text" name="commentText" class="comment-input" placeholder="コメントを追加">
+            <input type="submit" class="comment-button" value="コメント">
+        </form>
+    </div>
+</div>
 </c:forEach>
+<c:if test="${not empty errorMsg}">
+    <p style="color: red;">${errorMsg}</p>
+</c:if>
 </body>
 </html>

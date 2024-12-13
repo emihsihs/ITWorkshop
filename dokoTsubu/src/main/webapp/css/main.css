@@ -1,0 +1,108 @@
+@charset "UTF-8";
+body {
+    background-color: #E0F7FA;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.mutter-box {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.like-button {
+    background-color: #ffa726;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 14px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.like-count {
+    font-size: 14px;
+    color: #555;
+    margin-left: 10px;
+}
+
+.comment-box {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.comment-input {
+    width: 80%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.comment-button {
+    padding: 5px 10px;
+    background-color: #42a5f5;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #42a5f5;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.update-button:hover {
+    background-color: #1e88e5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-info {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    margin-left: auto;
+    padding: 8px 16px;
+    background-color: #fa9f32;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.logout-button:hover {
+    background-color: #ffb257;
+}
+
+/* 画像サイズを調整して正方形にする */
+.attached-image {
+    width: 150px; /* 正方形の幅 */
+    height: 150px; /* 正方形の高さ */
+    object-fit: cover; /* 画像を中央に収める */
+    display: block;
+    margin: 10px 0;
+}
+
+@media (max-width:600px) {
+    .main {
+        border-radius: 0px;
+    }
+}

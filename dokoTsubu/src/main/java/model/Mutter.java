@@ -12,6 +12,8 @@ public class Mutter implements Serializable {
     private List<Comment> comments;
     private String imageUrl;
 
+    // コンストラクタとゲッター・セッターを確認
+
     public Mutter() {}
 
     public Mutter(String userName, String text, String tag, int likeCount, List<Comment> comments, String imageUrl) {
@@ -51,6 +53,10 @@ public class Mutter implements Serializable {
 
     public int getLikeCount() {
         return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 
     public List<Comment> getComments() {

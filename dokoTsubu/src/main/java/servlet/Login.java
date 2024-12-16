@@ -25,19 +25,20 @@ public class Login extends HttpServlet {
         // デバッグ用ログ
         System.out.println("Attempting login with username: " + name + " and password: " + pass);
 
-        // Userインスタンス（ユーザー情報）の生成
-        User user = new User(name, pass);
-
         // ログイン処理
         LoginLogic loginLogic = new LoginLogic();
-        boolean isLogin = loginLogic.execute(user);
+        User loginUser = loginLogic.execute(name, pass);
 
         // ログイン成功時の処理
-        if (isLogin) {
+        if (loginUser != null) {
+            // デバッグ用ログ
+            System.out.println("Login successful for user: " + loginUser.getName() + " with ID: " + loginUser.getId());
+
             // ユーザー情報をセッションスコープに保存
             HttpSession session = request.getSession();
-            session.setAttribute("loginUser", user);
+            session.setAttribute("loginUser", loginUser);
         } else {
+            System.out.println("Login failed: invalid username or password");
             request.setAttribute("errorMessage", "ユーザー名またはパスワードが正しくありません。");
         }
 
@@ -46,4 +47,5 @@ public class Login extends HttpServlet {
         dispatcher.forward(request, response);
     }
 }
+
 

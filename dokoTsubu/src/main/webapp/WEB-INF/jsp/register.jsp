@@ -16,10 +16,10 @@
 <input type="password" name="pass" class="pass" placeholder="Password(半角数字4桁)" pattern="\d{4}" required><br>
 <input type="submit" id="submit" value="登録" class="submit">
 </form>
+<c:if test="${not empty errorMessage}">
+    <p style="color: red;" align="center">${errorMessage}</p>
+</c:if>
 <p align="center"><a href="index.jsp" class="back-button">戻る</a></p>
 </div>
 </body>
 </html>
-
-
-

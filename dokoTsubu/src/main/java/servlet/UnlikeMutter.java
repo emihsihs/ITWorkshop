@@ -7,37 +7,36 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.DeleteMutterLogic;
+import model.UnlikeMutterLogic;
 import model.User;
 
-@WebServlet("/DeleteMutter")
-public class DeleteMutter extends HttpServlet {
+@WebServlet("/UnlikeMutter")
+public class UnlikeMutter extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int mutterId = Integer.parseInt(request.getParameter("mutterId"));
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute("loginUser");
+        User loginUser = (User) request.getSession().getAttribute("loginUser");
 
         if (loginUser == null) {
             System.out.println("ログインユーザーが見つかりませんでした。");
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login.jsp"); // ログインページにリダイレクト
             return;
         }
 
-        String loginUserName = loginUser.getName();
-        System.out.println("ログインユーザー名: " + loginUserName);
+        int userId = loginUser.getId();
+        System.out.println("ログインユーザーID: " + userId);
 
-        DeleteMutterLogic deleteMutterLogic = new DeleteMutterLogic();
-        boolean success = deleteMutterLogic.execute(mutterId, loginUserName);
+        UnlikeMutterLogic unlikeMutterLogic = new UnlikeMutterLogic();
+        boolean success = unlikeMutterLogic.execute(mutterId, userId);
 
         if (success) {
-            System.out.println("投稿が削除されました。");
+            System.out.println("いいね解除が成功しました");
         } else {
-            System.out.println("投稿の削除に失敗しました。");
+            System.out.println("いいね解除が失敗しました");
         }
 
         response.sendRedirect("Main");
     }
 }
+

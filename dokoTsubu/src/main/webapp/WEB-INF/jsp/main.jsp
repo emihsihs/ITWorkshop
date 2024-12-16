@@ -32,6 +32,10 @@
       <input type="hidden" name="mutterId" value="${mutter.id}">
       <input type="submit" class="like-button" value="いいね">
    </form>
+   <form action="UnlikeMutter" method="post" style="display:inline;">
+      <input type="hidden" name="mutterId" value="${mutter.id}">
+      <input type="submit" class="unlike-button" value="いいね解除">
+   </form>
    <span class="like-count">${mutter.likeCount} いいね</span>
    <c:if test="${not empty mutter.imageUrl}">
        <img src="${mutter.imageUrl}" alt="Attached Image" class="attached-image">

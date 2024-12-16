@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import dao.LikesDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -30,6 +31,13 @@ public class Main extends HttpServlet {
         // つぶやきリストを取得して、リクエストスコープに保存
         GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
         List<Mutter> mutterList = getMutterListLogic.execute();
+
+        LikesDAO likesDAO = new LikesDAO();
+        for (Mutter mutter : mutterList) {
+            int likeCount = likesDAO.countLikes(mutter.getId());
+            mutter.setLikeCount(likeCount); // いいね数をセット
+        }
+
         request.setAttribute("mutterList", mutterList);
 
         // ログインしているか確認するため、セッションスコープからユーザー情報を取得
@@ -84,3 +92,4 @@ public class Main extends HttpServlet {
         return null;
     }
 }
+

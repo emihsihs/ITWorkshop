@@ -41,16 +41,14 @@ public class MuttersDAO {
     }
 
     public boolean create(Mutter mutter) {
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "INSERT INTO MUTTERS(NAME, TEXT, TAG, IMAGEURL) VALUES(?, ?, ?, ?)";
-            try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
-                pStmt.setString(1, mutter.getUserName());
-                pStmt.setString(2, mutter.getText());
-                pStmt.setString(3, mutter.getTag());
-                pStmt.setString(4, mutter.getImageUrl());
-                int result = pStmt.executeUpdate();
-                return result == 1;
-            }
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+             PreparedStatement pStmt = conn.prepareStatement("INSERT INTO MUTTERS(NAME, TEXT, TAG, IMAGEURL) VALUES(?, ?, ?, ?)")) {
+            pStmt.setString(1, mutter.getUserName());
+            pStmt.setString(2, mutter.getText());
+            pStmt.setString(3, mutter.getTag());
+            pStmt.setString(4, mutter.getImageUrl());
+            int result = pStmt.executeUpdate();
+            return result == 1;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -59,15 +57,42 @@ public class MuttersDAO {
 
     public boolean delete(int mutterId) {
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "DELETE FROM MUTTERS WHERE ID=?";
-            try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
-                pStmt.setInt(1, mutterId);
-                int result = pStmt.executeUpdate();
+            // まず、関連するcommentsレコードを削除
+            try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM comments WHERE mutterId = ?")) {
+                pstmt.setInt(1, mutterId);
+                pstmt.executeUpdate();
+            }
+
+            // 次に、関連するlikesレコードを削除
+            try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM likes WHERE mutterId = ?")) {
+                pstmt.setInt(1, mutterId);
+                pstmt.executeUpdate();
+            }
+
+            // 最後に、mutterレコードを削除
+            try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM mutters WHERE id = ?")) {
+                pstmt.setInt(1, mutterId);
+                int result = pstmt.executeUpdate();
                 return result == 1;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String findUserByMutterId(int mutterId) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+             PreparedStatement pStmt = conn.prepareStatement("SELECT NAME FROM mutters WHERE ID = ?")) {
+            pStmt.setInt(1, mutterId);
+            try (ResultSet rs = pStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("NAME");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

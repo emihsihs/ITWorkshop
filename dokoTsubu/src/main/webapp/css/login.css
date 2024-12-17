@@ -84,21 +84,29 @@ body {
 .b{
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
     color: black;
-    text-decoration: none
+    text-decoration: none;
 }
 
-.back-button {
-     display: inline-block; 
-     padding: 8px 16px; 
-     background-color: #fa9f32; 
-     color: #fff; 
-     border-radius: 5px; 
-     text-decoration: none; 
-     font-family: 'Ubuntu', sans-serif; 
-     margin-top: 20px; 
-} 
-     
-.back-button:hover { 
+.back-button, .button-center {
+    display: inline-block; 
+    padding: 5px 10px; 
+    margin-left: 3%;
+    background-color: #fa9f32; 
+    color: #fff; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    font-family: 'Ubuntu', sans-serif; 
+/*    margin-top: 3px; */
+    text-align: center;
+    width: fit-content;
+}
+
+.button-center {
+    display: block; /* ボタンをブロック表示にして中央揃えを容易に */
+    margin: 20px auto; /* 上下左右の余白を自動調整して中央揃え */
+}
+
+.back-button:hover, .button-center:hover { 
     background-color: #ffb257;
 }
 

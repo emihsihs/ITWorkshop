@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1 class="b" align="center">カンリーログアウト</h1>
-<p>ログアウトしました</p>
-<a href="index.jsp">トップへ</a>
+<p align="center">ログアウトしました</p>
+<a href="index.jsp" class="button-center">トップへ</a>
 </body>
 </html>

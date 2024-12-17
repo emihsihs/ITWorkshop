@@ -1,79 +1,62 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import utils.DatabaseUtils;
+
 public class LikesDAO {
-    private static final String JDBC_URL = "jdbc:h2:tcp://localhost/~/desktop/SQL/dokoTsubu";
-    private static final String DB_USER = "sa";
-    private static final String DB_PASS = "";
 
     public boolean insert(int mutterId, int userId) {
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "INSERT INTO likes (mutterId, userId) VALUES (?, ?)";
-            try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
-                pStmt.setInt(1, mutterId);
-                pStmt.setInt(2, userId);
-                int result = pStmt.executeUpdate();
-                return result == 1;
-            }
+        String sql = "INSERT INTO likes (mutterId, userId) VALUES (?, ?)";
+        try (Connection conn = DatabaseUtils.getConnection();
+             PreparedStatement pStmt = conn.prepareStatement(sql)) {
+            pStmt.setInt(1, mutterId);
+            pStmt.setInt(2, userId);
+            return pStmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Failed to insert like", e);
         }
     }
 
     public boolean delete(int mutterId, int userId) {
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "DELETE FROM likes WHERE mutterId=? AND userId=?";
-            try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
-                pStmt.setInt(1, mutterId);
-                pStmt.setInt(2, userId);
-                int result = pStmt.executeUpdate();
-                return result == 1;
-            }
+        String sql = "DELETE FROM likes WHERE mutterId=? AND userId=?";
+        try (Connection conn = DatabaseUtils.getConnection();
+             PreparedStatement pStmt = conn.prepareStatement(sql)) {
+            pStmt.setInt(1, mutterId);
+            pStmt.setInt(2, userId);
+            return pStmt.executeUpdate() == 1;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Failed to delete like", e);
         }
     }
 
     public int countLikes(int mutterId) {
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "SELECT COUNT(*) FROM likes WHERE mutterId = ?";
-            try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
-                pStmt.setInt(1, mutterId);
-                try (ResultSet rs = pStmt.executeQuery()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+        String sql = "SELECT COUNT(*) FROM likes WHERE mutterId = ?";
+        try (Connection conn = DatabaseUtils.getConnection();
+             PreparedStatement pStmt = conn.prepareStatement(sql)) {
+            pStmt.setInt(1, mutterId);
+            try (ResultSet rs = pStmt.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to count likes", e);
         }
-        return 0;
     }
 
-    // 新しいメソッドを追加
     public boolean isLiked(int mutterId, int userId) {
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "SELECT COUNT(*) FROM likes WHERE mutterId = ? AND userId = ?";
-            try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
-                pStmt.setInt(1, mutterId);
-                pStmt.setInt(2, userId);
-                try (ResultSet rs = pStmt.executeQuery()) {
-                    if (rs.next()) {
-                        return rs.getInt(1) > 0;
-                    }
-                }
+        String sql = "SELECT COUNT(*) FROM likes WHERE mutterId = ? AND userId = ?";
+        try (Connection conn = DatabaseUtils.getConnection();
+             PreparedStatement pStmt = conn.prepareStatement(sql)) {
+            pStmt.setInt(1, mutterId);
+            pStmt.setInt(2, userId);
+            try (ResultSet rs = pStmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to check if liked", e);
         }
-        return false;
     }
 }

@@ -12,7 +12,7 @@
 <h1 class="b" align="center">カンリーメイン</h1>
 <div class="header">
     <div class="login-info">
-        <c:out value="${loginUser.name}" />さん、ログイン中
+        <c:out value="${loginUser.name}"/>さん、ログイン中
         <a href="Logout" class="logout-button">ログアウト</a>
     </div>
     <div class="update-container">

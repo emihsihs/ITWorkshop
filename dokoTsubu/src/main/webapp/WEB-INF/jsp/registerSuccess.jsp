@@ -10,6 +10,6 @@
 <body>
 <h1 class="b" align="center">ユーザー登録成功</h1>
 <p align="center">ユーザー登録が成功しました</p>
-<a href="index.jsp">ログインページへ</a>
+<a href="index.jsp" class="button-center">ログインページへ</a>
 </body>
 </html>

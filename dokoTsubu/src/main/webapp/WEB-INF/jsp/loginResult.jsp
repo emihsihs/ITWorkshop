@@ -17,10 +17,10 @@
 <% if(loginUser != null) { %>
 <p align="center">ログインに成功しました</p>
 <p align="center">ようこそ<%= loginUser.getName() %>さん</p>
-<a href="Main">カンリー投稿・閲覧へ</a>
+<a href="Main" class="button-center">カンリー投稿・閲覧へ</a>
 <% } else { %>
 <p>ログインに失敗しました</p>
-<a href="index.jsp">TOPへ</a>
+<a href="index.jsp" class="button-center">TOPへ</a>
 <% } %>
 </body>
 </html>

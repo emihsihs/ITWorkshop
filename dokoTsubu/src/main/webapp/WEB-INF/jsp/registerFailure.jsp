@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1 class="b" align="center">会員登録に失敗しました</h1>
-<a href="<%=request.getContextPath() %>/Register">再試行</a> <!-- サーブレット経由でリダイレクト -->
+<a href="<%=request.getContextPath() %>/Register" class="button-center">再試行</a>
 </body>
 </html>
 
